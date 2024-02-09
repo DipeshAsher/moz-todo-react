@@ -6,7 +6,8 @@ function Form(props) {
 
     function handleChange(event) {
         console.log("Typing!");
-        console.log(event.target.value);
+        console.log("Event Value: " + event.target.value);
+        console.log("Event Name: " + event.target.name);
         setName(event.target.value);
     }
 
