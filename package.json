@@ -1,7 +1,7 @@
 {
   "homepage": "https://dipeshasher.github.io/moz-todo-react",
   "name": "moz-todo-react",
-  "private": true,
+  "private": false,
   "version": "0.1.0",
   "type": "module",
   "scripts": {
