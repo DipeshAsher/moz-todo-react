@@ -1,3 +1,5 @@
+// Parent component, most React components will have 3 parts, imports at top, main App() function in the middle and export at bottom.
+
 import Form from "./components/Form";
 import FilterButton from "./components/FilterButton";
 import Todo from "./components/Todo";
@@ -63,12 +65,12 @@ function App(props) {
     const [tasks, setTasks] = useState(props.tasks);
     const taskList = tasks
         .filter(FILTER_MAP[filter])
-        .map((task) => (
+        .map((task) => (    // Creates a new array from calling a function for every array element.
             <Todo
                 id={task.id}
                 name={task.name}
                 completed={task.completed}
-                key={task.id}
+                key={task.id}   // key is a special prop used to track which prop it refers to.
                 toggleTaskCompleted={toggleTaskCompleted}
                 deleteTask={deleteTask}
                 editTask={editTask}

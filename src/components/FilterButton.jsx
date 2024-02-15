@@ -1,3 +1,5 @@
+// Component for filtering tasks either by All, Active or Complete buttons.
+
 function FilterButton(props) {
     return (
         <button

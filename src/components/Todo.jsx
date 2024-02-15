@@ -1,3 +1,5 @@
+// Component for the task items that are remaining in the list.
+
 import { useEffect, useRef, useState } from "react";
 
 function usePrevious(value) {
@@ -66,7 +68,7 @@ function Todo(props) {
         <div className="stack-small">
             <div className="c-cb">
                 <input
-                    id={props.id}
+                    id={props.id}   // Makes use of id prop from 
                     type="checkbox"
                     defaultChecked={props.completed}
                     onChange={() => props.toggleTaskCompleted(props.id)}
