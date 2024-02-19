@@ -1,21 +1,15 @@
 // Component for the task items that are remaining in the list.
 
+import usePrevious from "../usePrevious";
 import { useEffect, useRef, useState } from "react";
 
-function usePrevious(value) {
-    const ref = useRef();
-    useEffect(() => {
-        ref.current = value;
-    });
-    return ref.current;
-}
-
 function Todo(props) {
-    const [isEditing, setEditing] = useState(false);
+    const [isEditing, setEditing] = useState(false);    // Setting state to check if task needs editing
     const [newName, setNewName] = useState("");
     const editFieldRef = useRef(null);
     const editButtonRef = useRef(null);
     const wasEditing = usePrevious(isEditing);
+    console.log(wasEditing);
 
     function handleChange(e) {
         setNewName(e.target.value);
@@ -28,6 +22,7 @@ function Todo(props) {
         setEditing(false);
     }
 
+    // Brought up when editing of task is required
     const editingTemplate = (
         <form className="stack-small" onSubmit={handleSubmit}>
             <div className="form-group">
@@ -47,7 +42,7 @@ function Todo(props) {
                 <button
                     type="button"
                     className="btn todo-cancel"
-                    onClick={() => setEditing(false)}
+                    onClick={() => setEditing(false)}   // Switch back to view template
                 >
                     Cancel
                     <span className="visually-hidden">
@@ -64,11 +59,12 @@ function Todo(props) {
         </form>
     );
 
+    // Brought up when viewing of tasks in to do
     const viewTemplate = (
         <div className="stack-small">
             <div className="c-cb">
                 <input
-                    id={props.id}   // Makes use of id prop from 
+                    id={props.id}
                     type="checkbox"
                     defaultChecked={props.completed}
                     onChange={() => props.toggleTaskCompleted(props.id)}
@@ -81,7 +77,7 @@ function Todo(props) {
                 <button
                     type="button"
                     className="btn"
-                    onClick={() => setEditing(true)}
+                    onClick={() => setEditing(true)}    // Switch to edit template
                     ref={editButtonRef}
                 >
                     Edit <span className="visually-hidden">{props.name}</span>
@@ -97,6 +93,7 @@ function Todo(props) {
         </div>
     );
 
+    // Logic for more robust focus management when editing the task 
     useEffect(() => {
         if (!wasEditing && isEditing) {
             editFieldRef.current.focus();
@@ -106,6 +103,8 @@ function Todo(props) {
     }, [wasEditing, isEditing]);
 
     return (
+        // Returns the appropriate template dependent on isEditing true or false
+        // ? is a ternary operator for conditional check (if statement)
         <li className="todo">{isEditing ? editingTemplate : viewTemplate}</li>
     );
 }

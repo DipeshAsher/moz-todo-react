@@ -3,17 +3,14 @@
 import Form from "./components/Form";
 import FilterButton from "./components/FilterButton";
 import Todo from "./components/Todo";
-import { nanoid } from "nanoid";
+import usePrevious from "./usePrevious";
+import { nanoid } from "nanoid"; // Library to make unique identifiers
 import { useState, useRef, useEffect } from "react";
+// useState to store the tasks in state or memory
+// useRef allows to persist values between renders
+// useEffect lets you synchronise a component with external system
 
-function usePrevious(value) {
-    const ref = useRef();
-    useEffect(() => {
-        ref.current = value;
-    });
-    return ref.current;
-}
-
+// To filter tasks by the 3 categories of All, Active or Completed
 const FILTER_MAP = {
     All: () => true,
     Active: (task) => !task.completed,
@@ -42,6 +39,7 @@ function App(props) {
     }
 
     function deleteTask(id) {
+        // Filter in tasks to only include in new array if id prop doesn't match id argument passed into deleteTask() function
         const remainingTasks = tasks.filter((task) => id !== task.id);
         setTasks(remainingTasks);
         console.log(remainingTasks);
@@ -63,20 +61,23 @@ function App(props) {
 
     const [filter, setFilter] = useState("All");
     const [tasks, setTasks] = useState(props.tasks);
-    const taskList = tasks
-        .filter(FILTER_MAP[filter])
-        .map((task) => (    // Creates a new array from calling a function for every array element.
+    const taskList = tasks.filter(FILTER_MAP[filter]).map(
+        (
+            task // Creates a new array from calling a function for every array element.
+        ) => (
             <Todo
                 id={task.id}
                 name={task.name}
                 completed={task.completed}
-                key={task.id}   // key is a special prop used to track which prop it refers to.
+                key={task.id} // key is a special prop used to track which prop it refers to.
                 toggleTaskCompleted={toggleTaskCompleted}
                 deleteTask={deleteTask}
                 editTask={editTask}
             />
-        ));
+        )
+    );
 
+    // Render all three filters used to map over array of FILTER_NAMES and return the FilterButton component.
     const filterList = FILTER_NAMES.map((name) => (
         <FilterButton
             key={name}
@@ -86,15 +87,14 @@ function App(props) {
         />
     ));
 
+    // Setting correct heading grammar of tasks or task with right number of tasks remaining.
     const tasksNoun = taskList.length !== 1 ? "tasks" : "task";
     const headingText = `${taskList.length} ${tasksNoun} remaining`;
 
     const listHeadingRef = useRef(null);
     const prevTaskLength = usePrevious(tasks.length);
-    // TODO using usePrevious() in two files
-    // Refactor so move it to its own file and export it from there
-    // Import it where it's needed
 
+    // Set focus on Heading if number of tasks is smaller than previous after a delete.
     useEffect(() => {
         if (tasks.length < prevTaskLength) {
             listHeadingRef.current.focus();
